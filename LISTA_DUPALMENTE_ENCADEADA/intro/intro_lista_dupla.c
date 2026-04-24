@@ -8,7 +8,7 @@ struct DNode_ {
     int info;
     DNode *next;
     DNode *previous;
-}
+};
 
 int main () {
 
