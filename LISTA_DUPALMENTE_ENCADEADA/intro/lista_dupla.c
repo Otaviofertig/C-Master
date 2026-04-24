@@ -38,3 +38,22 @@ void insert_head(DList *list, int value) {
     }
     list->size++;
 }
+
+void insert_tail(DList *list, int value) {
+    DNode *new_node = (DNode*) malloc(sizeof(DNode));
+    new_node->info = value;
+    new_node->next = NULL;
+    new_node->previous = list->tail;
+
+    
+    if (list->tail != NULL) {
+        list->tail->next = new_node;
+    }
+
+    
+    list->tail = new_node;
+    if (list->head == NULL) {
+        list->head = new_node;
+    }
+    list->size++;
+}
