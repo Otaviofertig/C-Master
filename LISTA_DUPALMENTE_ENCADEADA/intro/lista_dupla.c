@@ -57,3 +57,37 @@ void insert_tail(DList *list, int value) {
     }
     list->size++;
 }
+
+// EXERCÍCIO 3: Busca Reversa (do Tail para o Head)
+int buscar_paciente_reverso(DList *list, int id_procurado) {
+    DNode *atual = list->tail; // Começa no tail
+
+    while (atual != NULL) {
+        if (atual->info == id_procurado) {
+            return 1;
+        }
+        atual = atual->previous; // Procura de trás para frente
+    }
+    return 0; 
+}
+
+// EXERCÍCIO 4: Inserir no meio (depois de um nó 'atual')
+void insert_after(DList *list, DNode *atual, int value) {
+    if (atual == NULL) return; 
+    
+    if (atual == list->tail) {
+        insert_tail(list, value);
+        return;
+    }
+
+    DNode *novo = (DNode*) malloc(sizeof(DNode));
+    novo->info = value;
+
+    
+    novo->next = atual->next;     
+    novo->previous = atual;       
+    atual->next->previous = novo; 
+    atual->next = novo;           
+
+    list->size++;
+}
