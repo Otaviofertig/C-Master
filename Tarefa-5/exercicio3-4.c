@@ -8,6 +8,7 @@ struct DNode_ {
     DNode *next;
     DNode *previous;
 };
+
 typedef struct DLIST_ {
     DNode *head;
     DNode *tail;    
