@@ -1,0 +1,55 @@
+﻿Nome: Otávio Lessmann Fertig
+
+Tarefa 5 - Exercícios teóricos 1,2 e 5 (3 e 4 estão no repositório dentro do exercício da aula ead).
+
+
+Exercício 1: A Quebra de Paradigma (Teoria)
+Em uma Lista Simplesmente Encadeada, remover o último elemento (Tail) exige percorrer toda a estrutura desde o início (Head), resultando em uma complexidade de tempo O(n). Explique com suas palavras: como a introdução do ponteiro *previous na Lista Duplamente Encadeada resolve esse problema? Qual passa a ser a complexidade de tempo para essa operação e por quê?
+
+
+Resposta: A introdução do ponteiro previous é uma mão na roda porque nos dá acesso imediato ao vizinho de trás (o penúltimo elemento). Em uma lista simples, a gente precisaria percorrer a fila inteira só para descobrir quem está antes do último nó, o que custa tempo (complexidade O(n)). Agora, com o duplo encadeamento, é só usar o atalho tail->previous e fazer dele o novo final da lista. Como resolvemos isso em um único passo direto e sem loops, a complexidade de tempo cai na hora de O(n) para O(1) 
+
+
+Exercício 2: Caça ao Bug (Análise de Código / Memory Leak)
+Um desenvolvedor júnior tentou implementar a função de remover um paciente do meio da fila de triagem e escreveu o seguinte trecho de código:
+// 'atual' é o paciente que será removido do meio da lista
+free(atual);
+atual->previous->next = atual->next;
+atual->next->previous = atual->previous;
+list->size--;
+Qual é o erro fatal neste código? O que acontecerá com a lista na memória (Heap) ao executar essas linhas nessa exata ordem? Reescreva o trecho corrigindo o problema.
+
+
+Resposta: O erro fatal foi ter liberado a memória antes do código que atualiza os ponteiros assim tentando arrumar algo que não existe.
+
+Código em C corrigido: 
+
+
+// 1. O vizinho de trás aponta para o vizinho da frente
+atual->previous->next = atual->next;
+
+
+// 2. O vizinho da frente aponta para o vizinho de trás
+atual->next->previous = atual->previous;
+
+
+// 3. Agora que o nó está isolado da lista, podemos apagá-lo em segurança!
+free(atual);
+
+
+// 4. Diminuímos o tamanho da lista
+list->size--;
+
+
+Exercício 5: O Desafio da Promoção (Lógica de Refatoração)
+No contexto do "Hospital Triage", imagine que o estado de um paciente que estava no meio da fila se agravou e ele precisa ir imediatamente para o topo (Head) da lista.
+Utilizando a base das funções que já discutimos, descreva o passo a passo lógico (ou o código em C, se preferir) para criar a função promover_paciente(DList *list, int id).
+Dica: Você não precisa criar a lógica do zero.         Como você combinaria a função de remoção e a função de inserção no Head para resolver este problema rapidamente?
+
+
+Resposta: A Lógica (Passo a Passo): Seguindo a dica incrível do exercício, nós realmente não precisamos reinventar a roda. Já sabemos remover do meio e inserir na cabeça.
+Aqui está o passo a passo lógico para o promover_paciente:
+1. Busca: Usamos uma função de busca para encontrar o nó do paciente pelo ID. (Se não encontrar, a função simplesmente encerra).
+2. Guarda a Informação: Salvamos o ID (ou os dados do paciente) em uma variável temporária int id_salvo = paciente_encontrado->info;.
+3. Remoção: Removemos o paciente da posição atual. Usamos aquela exata lógica que corrigimos no Exercício 2 (desconectando os ponteiros next e previous dos vizinhos, dando free no nó atual e diminuindo o size).
+4. Inserção no Head: Como já temos a função insert_head(list, value) prontinha no seu código, simplesmente chamamos: insert_head(list, id_salvo);.
