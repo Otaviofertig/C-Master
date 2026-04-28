@@ -8,7 +8,7 @@ int busca_binaria(int vetor[], int tamanho, int valor_procurado) {
     while(inicio <= fim){
         int meio = (inicio+fim) /2;
 
-        printf("inicio=%d, meio=%d, fim=%d, valor_procurado=%d", inicio, meio, fim, valor_procurado);
+        printf("inicio=%d, meio=%d, fim=%d, valor_procurado=%d\n", inicio, meio, fim, valor_procurado);
         
         if (vetor[meio] == valor_procurado)
         return meio;
